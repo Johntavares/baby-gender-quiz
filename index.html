@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Descubra o sexo do bebê 👶</title>
+
+<style>
+:root{
+  --pink:#f6b7c5;
+  --blue:#b7d8f6;
+  --radius:22px;
+}
+
+*{box-sizing:border-box;font-family:system-ui,Arial}
+
+body{
+  margin:0;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:linear-gradient(135deg,var(--pink),var(--blue));
+}
+
+.app{
+  width:100%;
+  max-width:420px;
+  background:#fff;
+  border-radius:var(--radius);
+  padding:24px;
+  box-shadow:0 16px 32px rgba(0,0,0,.15);
+  animation:fade .3s ease;
+}
+
+@keyframes fade{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1}
+}
+
+h1,h2,h3,p{text-align:center;margin:0 0 12px}
+p{color:#555}
+
+button{
+  width:100%;
+  padding:14px;
+  margin-top:12px;
+  border:none;
+  border-radius:16px;
+  font-size:1rem;
+  background:linear-gradient(135deg,var(--pink),var(--blue));
+}
+
+.progress{
+  height:8px;
+  background:#eee;
+  border-radius:8px;
+  overflow:hidden;
+  margin-bottom:12px;
+}
+
+.progress-bar{
+  height:100%;
+  width:0;
+  background:linear-gradient(90deg,var(--pink),var(--blue));
+}
+
+.card-viral{
+  border-radius:20px;
+  padding:28px;
+  text-align:center;
+  color:#333;
+}
+
+.note{
+  font-size:.8rem;
+  color:#777;
+}
+</style>
+</head>
+
+<body>
+
+<div id="app" class="app"></div>
+
+<script>
+var app=document.getElementById("app");
+
+var questions=[
+ {q:"Qual sua idade?", o:[["Menos de 25",-1],["25 a 34",2],["35 ou mais",-1]]},
+ {q:"Em que mês engravidou?", o:[["Jan a Abr",2],["Mai a Ago",-2],["Set a Dez",1]]},
+ {q:"Desejo maior?", o:[["Doce 🍰",-2],["Salgado 🧂",2],["Equilibrado",0]]},
+ {q:"Formato da barriga?", o:[["Pontuda",2],["Redonda",-2],["Não sei",0]]},
+ {q:"Batimentos do bebê?", o:[["Rápidos",-2],["Calmos",2],["Não sei",0]]}
+];
+
+var index=0;
+var score=0;
+
+/* TELAS */
+
+function start(){
+ app.innerHTML=
+ "<h1>Descubra o sexo do seu bebê 👶</h1>"+
+ "<p>Um teste divertido baseado em crenças populares 💕</p>"+
+ "<button onclick='next()'>Começar</button>";
+}
+
+function quiz(){
+ var q=questions[index];
+ var prog=(index/questions.length)*100;
+
+ var html=
+ "<div class='progress'><div class='progress-bar' style='width:"+prog+"%'></div></div>"+
+ "<p>Pergunta "+(index+1)+" de "+questions.length+"</p>"+
+ "<h2>"+q.q+"</h2>";
+
+ for(var i=0;i<q.o.length;i++){
+  html+="<button onclick='answer("+q.o[i][1]+")'>"+q.o[i][0]+"</button>";
+ }
+
+ app.innerHTML=html;
+}
+
+function loading(){
+ app.innerHTML=
+ "<h3>Analisando com carinho 💗</h3>"+
+ "<p>Aguarde um momentinho…</p>";
+
+ setTimeout(result,2000);
+}
+
+function result(){
+ var boy=score>0;
+ var chance=Math.floor(Math.random()*26)+70;
+ var title=boy?"MENINO 👶💙":"MENINA 👶💗";
+ var phrase=boy?
+   "Um pequeno herói está a caminho 💙":
+   "Uma princesinha cheia de amor está chegando 💗";
+
+ var bg=boy?
+ "linear-gradient(135deg,#b7d8f6,#e9f3ff)":
+ "linear-gradient(135deg,#f6b7c5,#fde4ea)";
+
+ app.innerHTML=
+ "<div class='card-viral' style='background:"+bg+"'>"+
+ "<p>✨ Meu resultado ✨</p>"+
+ "<h1>"+title+"</h1>"+
+ "<p>"+phrase+"</p>"+
+ "<p><strong>"+chance+"% de chance</strong></p>"+
+ "<p style='font-size:.8rem'>Descubra o seu também 👶</p>"+
+ "</div>"+
+ "<button onclick='share(\""+title+"\","+chance+")'>Compartilhar</button>"+
+ "<button onclick='reset()'>Refazer teste</button>"+
+ "<p class='note'>Teste recreativo · Ideal para compartilhar nos stories 📸</p>";
+}
+
+/* AÇÕES */
+
+function next(){
+ index=0; score=0;
+ quiz();
+}
+
+function answer(v){
+ score+=v;
+ index++;
+ index<questions.length?quiz():loading();
+}
+
+function share(t,c){
+ var txt="Meu teste do sexo do bebê deu "+t+" ("+c+"%) 😍👶 Veja o seu também: "+location.href;
+ window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank");
+}
+
+function reset(){ start(); }
+
+start();
+</script>
+<style>
+.ad-container {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  background: #f8f8f8;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 999;
+  font-size: 12px;
+  color: #666;
+}
+body { padding-bottom: 70px; }
+</style>
+
+<div class="ad-container">
+  Espaço reservado para anúncio
+</div>
+</body>
+</html>
