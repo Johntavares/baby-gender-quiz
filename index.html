@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Descubra o sexo do bebê 👶</title>
+<title>meu bebê 👶</title>
 
 <style>
 :root{
@@ -30,52 +30,62 @@ body{
   border-radius:var(--radius);
   padding:24px;
   box-shadow:0 16px 32px rgba(0,0,0,.15);
-  animation:fade .3s ease;
-}
-
-@keyframes fade{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1}
 }
 
 h1,h2,h3,p{text-align:center;margin:0 0 12px}
 p{color:#555}
 
+.logo{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  margin-bottom:16px;
+}
+
+.logo img{
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  margin-bottom:6px;
+}
+
 button{
   width:100%;
   padding:14px;
-  margin-top:12px;
+  margin-top:8px;
   border:none;
   border-radius:16px;
   font-size:1rem;
-  background:linear-gradient(135deg,var(--pink),var(--blue));
+  cursor:pointer;
 }
+
+.btn-main{background:linear-gradient(135deg,var(--pink),var(--blue))}
+.btn-wa{background:#25D366;color:#fff}
+.btn-fb{background:#1877F2;color:#fff}
+.btn-x{background:#000;color:#fff}
+.btn-copy{background:#eee;color:#333}
+.btn-download{background:#ffeef4;color:#333}
 
 .progress{
   height:8px;
   background:#eee;
   border-radius:8px;
-  overflow:hidden;
   margin-bottom:12px;
+  overflow:hidden;
 }
 
 .progress-bar{
   height:100%;
-  width:0;
   background:linear-gradient(90deg,var(--pink),var(--blue));
 }
 
-.card-viral{
+.card{
   border-radius:20px;
-  padding:28px;
+  padding:26px;
   text-align:center;
-  color:#333;
 }
 
-.note{
-  font-size:.8rem;
-  color:#777;
-}
+.note{font-size:.8rem;color:#777}
 </style>
 </head>
 
@@ -84,120 +94,146 @@ button{
 <div id="app" class="app"></div>
 
 <script>
-var app=document.getElementById("app");
+/* ================= CONFIG ================= */
+var APP_NAME = "meu bebê";
+var SLOGAN = "uma brincadeira cheia de amor";
+var LOGO_SRC = "assets/logo.png";
 
+/* ================= DATA ================= */
 var questions=[
- {q:"Qual sua idade?", o:[["Menos de 25",-1],["25 a 34",2],["35 ou mais",-1]]},
- {q:"Em que mês engravidou?", o:[["Jan a Abr",2],["Mai a Ago",-2],["Set a Dez",1]]},
- {q:"Desejo maior?", o:[["Doce 🍰",-2],["Salgado 🧂",2],["Equilibrado",0]]},
- {q:"Formato da barriga?", o:[["Pontuda",2],["Redonda",-2],["Não sei",0]]},
- {q:"Batimentos do bebê?", o:[["Rápidos",-2],["Calmos",2],["Não sei",0]]}
+ {q:"Qual sua idade?",o:[["Menos de 25",-1],["25 a 34",2],["35 ou mais",-1]]},
+ {q:"Em que mês engravidou?",o:[["Jan a Abr",2],["Mai a Ago",-2],["Set a Dez",1]]},
+ {q:"Desejo maior?",o:[["Doce 🍰",-2],["Salgado 🧂",2],["Equilibrado",0]]},
+ {q:"Formato da barriga?",o:[["Pontuda",2],["Redonda",-2],["Não sei",0]]},
+ {q:"Batimentos do bebê?",o:[["Rápidos",-2],["Calmos",2],["Não sei",0]]}
 ];
 
-var index=0;
-var score=0;
+var app=document.getElementById("app");
+var idx=0, score=0;
 
-/* TELAS */
-
+/* ================= FLOW ================= */
 function start(){
  app.innerHTML=
- "<h1>Descubra o sexo do seu bebê 👶</h1>"+
- "<p>Um teste divertido baseado em crenças populares 💕</p>"+
- "<button onclick='next()'>Começar</button>";
+ "<div class='logo'>"+
+ "<img src='"+LOGO_SRC+"' alt='meu bebê'>"+
+ "<strong>"+APP_NAME+"</strong>"+
+ "<span style='font-size:.85rem;color:#777'>"+SLOGAN+"</span>"+
+ "</div>"+
+ "<p>Descubra o sexo do seu bebê 👶</p>"+
+ "<button class='btn-main' onclick='quiz()'>Começar</button>";
 }
 
 function quiz(){
- var q=questions[index];
- var prog=(index/questions.length)*100;
-
- var html=
- "<div class='progress'><div class='progress-bar' style='width:"+prog+"%'></div></div>"+
- "<p>Pergunta "+(index+1)+" de "+questions.length+"</p>"+
+ var q=questions[idx];
+ var p=(idx/questions.length)*100;
+ var h=
+ "<div class='progress'><div class='progress-bar' style='width:"+p+"%'></div></div>"+
+ "<p>Pergunta "+(idx+1)+" de "+questions.length+"</p>"+
  "<h2>"+q.q+"</h2>";
-
- for(var i=0;i<q.o.length;i++){
-  html+="<button onclick='answer("+q.o[i][1]+")'>"+q.o[i][0]+"</button>";
- }
-
- app.innerHTML=html;
+ q.o.forEach(o=>h+="<button class='btn-main' onclick='ans("+o[1]+")'>"+o[0]+"</button>");
+ app.innerHTML=h;
 }
 
-function loading(){
- app.innerHTML=
- "<h3>Analisando com carinho 💗</h3>"+
- "<p>Aguarde um momentinho…</p>";
-
- setTimeout(result,2000);
+function ans(v){
+ score+=v; idx++;
+ idx<questions.length ? quiz() : load();
 }
 
+function load(){
+ app.innerHTML="<h3>Analisando com carinho 💗</h3><p>Aguarde…</p>";
+ setTimeout(result,1800);
+}
+
+/* ================= RESULT ================= */
 function result(){
  var boy=score>0;
- var chance=Math.floor(Math.random()*26)+70;
- var title=boy?"MENINO 👶💙":"MENINA 👶💗";
+ var r=boy?"MENINO 👶💙":"MENINA 👶💗";
+ var c=Math.floor(Math.random()*26)+70;
+
  var phrase=boy?
-   "Um pequeno herói está a caminho 💙":
-   "Uma princesinha cheia de amor está chegando 💗";
+ "Um pequeno herói está a caminho 💙":
+ "Uma princesinha cheia de amor 💗";
 
  var bg=boy?
- "linear-gradient(135deg,#b7d8f6,#e9f3ff)":
- "linear-gradient(135deg,#f6b7c5,#fde4ea)";
+ "linear-gradient(135deg,#b7d8f6,#eef6ff)":
+ "linear-gradient(135deg,#f6b7c5,#ffeef3)";
+
+ var text="Meu teste do meu bebê deu "+r+
+ " ("+c+"%) 😍👶\n\n"+
+ "Descubra o seu também 👉 "+location.href;
 
  app.innerHTML=
- "<div class='card-viral' style='background:"+bg+"'>"+
- "<p>✨ Meu resultado ✨</p>"+
- "<h1>"+title+"</h1>"+
+ "<div class='card' style='background:"+bg+"'>"+
+ "<img src='"+LOGO_SRC+"' style='width:56px;margin-bottom:8px'>"+
+ "<p style='font-size:.8rem'>"+APP_NAME+"</p>"+
+ "<h1>"+r+"</h1>"+
  "<p>"+phrase+"</p>"+
- "<p><strong>"+chance+"% de chance</strong></p>"+
- "<p style='font-size:.8rem'>Descubra o seu também 👶</p>"+
+ "<p><strong>"+c+"% de chance</strong></p>"+
+ "<p class='note'>"+SLOGAN+"</p>"+
  "</div>"+
- "<button onclick='share(\""+title+"\","+chance+")'>Compartilhar</button>"+
- "<button onclick='reset()'>Refazer teste</button>"+
- "<p class='note'>Teste recreativo · Ideal para compartilhar nos stories 📸</p>";
+
+ "<button class='btn-wa' onclick='wa(text)'>WhatsApp</button>"+
+ "<button class='btn-fb' onclick='fb()'>Facebook</button>"+
+ "<button class='btn-x' onclick='tw(text)'>X</button>"+
+ "<button class='btn-copy' onclick='copy(text)'>Copiar texto</button>"+
+ "<button class='btn-download' onclick='story(r,c)'>Baixar card para Stories</button>"+
+ "<button class='btn-main' onclick='start()'>Refazer teste</button>"+
+ "<p class='note'>Teste recreativo · Não substitui exames médicos</p>";
 }
 
-/* AÇÕES */
+/* ================= SHARE ================= */
+function wa(t){window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank");}
+function fb(){window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(location.href),"_blank");}
+function tw(t){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t),"_blank");}
+function copy(t){navigator.clipboard.writeText(t).then(()=>alert("Texto copiado!"))}
 
-function next(){
- index=0; score=0;
- quiz();
+/* ================= STORY IMAGE ================= */
+function story(r,c){
+ var cv=document.createElement("canvas"),w=1080,h=1920;
+ cv.width=w;cv.height=h;
+ var x=cv.getContext("2d");
+
+ var img=new Image();
+ img.src=LOGO_SRC;
+ img.onload=function(){
+   var boy=r.includes("MENINO");
+   var g=x.createLinearGradient(0,0,0,h);
+   g.addColorStop(0,boy?"#b7d8f6":"#f6b7c5");
+   g.addColorStop(1,"#fff");
+   x.fillStyle=g;x.fillRect(0,0,w,h);
+
+   x.textAlign="center";
+
+   x.drawImage(img,w/2-80,60,160,160);
+
+   x.font="bold 48px system-ui";
+   x.fillStyle="#333";
+   x.fillText(APP_NAME,w/2,260);
+
+   x.font="36px system-ui";
+   x.fillText(SLOGAN,w/2,310);
+
+   x.font="140px system-ui";
+   x.fillText("👶",w/2,520);
+
+   x.font="bold 96px system-ui";
+   x.fillText(r,w/2,740);
+
+   x.font="56px system-ui";
+   x.fillText(c+"% de chance",w/2,860);
+
+   x.font="44px system-ui";
+   x.fillText("Descubra o seu também",w/2,1020);
+
+   var a=document.createElement("a");
+   a.download="meu-bebe-stories.png";
+   a.href=cv.toDataURL("image/png");
+   a.click();
+ };
 }
-
-function answer(v){
- score+=v;
- index++;
- index<questions.length?quiz():loading();
-}
-
-function share(t,c){
- var txt="Meu teste do sexo do bebê deu "+t+" ("+c+"%) 😍👶 Veja o seu também: "+location.href;
- window.open("https://wa.me/?text="+encodeURIComponent(txt),"_blank");
-}
-
-function reset(){ start(); }
 
 start();
 </script>
-<style>
-.ad-container {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 60px;
-  background: #f8f8f8;
-  border-top: 1px solid #ddd;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-  font-size: 12px;
-  color: #666;
-}
-body { padding-bottom: 70px; }
-</style>
 
-<div class="ad-container">
-  Espaço reservado para anúncio
-</div>
 </body>
 </html>
