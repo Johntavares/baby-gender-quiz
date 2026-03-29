@@ -11,93 +11,54 @@
   --blue:#b7d8f6;
   --radius:22px;
 }
-
 *{box-sizing:border-box;font-family:system-ui,Arial}
-
 body{
-  margin:0;
-  min-height:100vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
+  margin:0;min-height:100vh;
+  display:flex;justify-content:center;align-items:center;
   background:linear-gradient(135deg,var(--pink),var(--blue));
 }
-
 .app{
-  width:100%;
-  max-width:420px;
-  background:#fff;
-  border-radius:var(--radius);
+  width:100%;max-width:420px;
+  background:#fff;border-radius:var(--radius);
   padding:24px;
   box-shadow:0 16px 32px rgba(0,0,0,.15);
 }
-
 h1,h2,h3,p{text-align:center;margin:0 0 12px}
 p{color:#555}
-
 .logo{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  display:flex;flex-direction:column;align-items:center;
   margin-bottom:16px;
 }
-
-.logo img{
-  width:72px;
-  height:72px;
-  object-fit:contain;
-  margin-bottom:6px;
-}
-
+.logo img{width:72px;height:72px;margin-bottom:6px}
 button{
-  width:100%;
-  padding:14px;
-  margin-top:8px;
-  border:none;
-  border-radius:16px;
-  font-size:1rem;
-  cursor:pointer;
+  width:100%;padding:14px;margin-top:8px;
+  border:none;border-radius:16px;
+  font-size:1rem;cursor:pointer;
 }
-
 .btn-main{background:linear-gradient(135deg,var(--pink),var(--blue))}
 .btn-wa{background:#25D366;color:#fff}
 .btn-fb{background:#1877F2;color:#fff}
 .btn-x{background:#000;color:#fff}
 .btn-copy{background:#eee;color:#333}
 .btn-download{background:#ffeef4;color:#333}
-
-.progress{
-  height:8px;
-  background:#eee;
-  border-radius:8px;
-  margin-bottom:12px;
-  overflow:hidden;
-}
-
-.progress-bar{
-  height:100%;
-  background:linear-gradient(90deg,var(--pink),var(--blue));
-}
-
-.card{
-  border-radius:20px;
-  padding:26px;
-  text-align:center;
-}
-
+.progress{height:8px;background:#eee;border-radius:8px;margin-bottom:12px;overflow:hidden}
+.progress-bar{height:100%;background:linear-gradient(90deg,var(--pink),var(--blue))}
+.card{border-radius:20px;padding:26px;text-align:center}
 .note{font-size:.8rem;color:#777}
 </style>
 </head>
 
 <body>
-
 <div id="app" class="app"></div>
 
 <script>
-/* ================= CONFIG ================= */
+/* ================= BRAND ================= */
 var APP_NAME = "meu bebê";
 var SLOGAN = "uma brincadeira cheia de amor";
-var LOGO_SRC = "assets/logo.png";
+
+/* Logo placeholder embutida (troque por Base64 da sua logo quando quiser) */
+var LOGO_BASE64 =
+"data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwIiBoZWlnaHQ9IjEyMCIgdmlld0JveD0iMCAwIDEyMCAxMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iNjAiIGN5PSI2MCIgcj0iNjAiIGZpbGw9IiNmNmI3YzUiLz48dGV4dCB4PSI2MCIgeT0iNzAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtc2l6ZT0iNDgiIGZpbGw9IiNmZmYiPvCfkbo8L3RleHQ+PC9zdmc+";
 
 /* ================= DATA ================= */
 var questions=[
@@ -115,9 +76,9 @@ var idx=0, score=0;
 function start(){
  app.innerHTML=
  "<div class='logo'>"+
- "<img src='"+LOGO_SRC+"' alt='meu bebê'>"+
+ "<img src='"+LOGO_BASE64+"'>"+
  "<strong>"+APP_NAME+"</strong>"+
- "<span style='font-size:.85rem;color:#777'>"+SLOGAN+"</span>"+
+ "<span class='note'>"+SLOGAN+"</span>"+
  "</div>"+
  "<p>Descubra o sexo do seu bebê 👶</p>"+
  "<button class='btn-main' onclick='quiz()'>Começar</button>";
@@ -144,87 +105,55 @@ function load(){
  setTimeout(result,1800);
 }
 
-/* ================= RESULT ================= */
 function result(){
  var boy=score>0;
  var r=boy?"MENINO 👶💙":"MENINA 👶💗";
  var c=Math.floor(Math.random()*26)+70;
-
- var phrase=boy?
- "Um pequeno herói está a caminho 💙":
- "Uma princesinha cheia de amor 💗";
-
- var bg=boy?
- "linear-gradient(135deg,#b7d8f6,#eef6ff)":
- "linear-gradient(135deg,#f6b7c5,#ffeef3)";
-
- var text="Meu teste do meu bebê deu "+r+
- " ("+c+"%) 😍👶\n\n"+
- "Descubra o seu também 👉 "+location.href;
+ var phrase=boy?"Um pequeno herói está a caminho 💙":"Uma princesinha cheia de amor 💗";
+ var bg=boy?"linear-gradient(135deg,#b7d8f6,#eef6ff)":"linear-gradient(135deg,#f6b7c5,#ffeef3)";
+ var text="Meu teste do "+APP_NAME+" deu "+r+" ("+c+"%) 😍👶\n\nDescubra o seu também 👉 "+location.href;
 
  app.innerHTML=
  "<div class='card' style='background:"+bg+"'>"+
- "<img src='"+LOGO_SRC+"' style='width:56px;margin-bottom:8px'>"+
- "<p style='font-size:.8rem'>"+APP_NAME+"</p>"+
+ "<img src='"+LOGO_BASE64+"' style='width:56px;margin-bottom:8px'>"+
+ "<p class='note'>"+APP_NAME+"</p>"+
  "<h1>"+r+"</h1>"+
  "<p>"+phrase+"</p>"+
  "<p><strong>"+c+"% de chance</strong></p>"+
  "<p class='note'>"+SLOGAN+"</p>"+
  "</div>"+
-
  "<button class='btn-wa' onclick='wa(text)'>WhatsApp</button>"+
- "<button class='btn-fb' onclick='fb()'>Facebook</button>"+
- "<button class='btn-x' onclick='tw(text)'>X</button>"+
  "<button class='btn-copy' onclick='copy(text)'>Copiar texto</button>"+
  "<button class='btn-download' onclick='story(r,c)'>Baixar card para Stories</button>"+
- "<button class='btn-main' onclick='start()'>Refazer teste</button>"+
- "<p class='note'>Teste recreativo · Não substitui exames médicos</p>";
+ "<button class='btn-main' onclick='start()'>Refazer teste</button>";
 }
 
 /* ================= SHARE ================= */
 function wa(t){window.open("https://wa.me/?text="+encodeURIComponent(t),"_blank");}
-function fb(){window.open("https://www.facebook.com/sharer/sharer.php?u="+encodeURIComponent(location.href),"_blank");}
-function tw(t){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(t),"_blank");}
 function copy(t){navigator.clipboard.writeText(t).then(()=>alert("Texto copiado!"))}
 
-/* ================= STORY IMAGE ================= */
+/* ================= STORY IMG ================= */
 function story(r,c){
  var cv=document.createElement("canvas"),w=1080,h=1920;
  cv.width=w;cv.height=h;
  var x=cv.getContext("2d");
+ var boy=r.includes("MENINO");
+ var g=x.createLinearGradient(0,0,0,h);
+ g.addColorStop(0,boy?"#b7d8f6":"#f6b7c5");
+ g.addColorStop(1,"#fff");
+ x.fillStyle=g;x.fillRect(0,0,w,h);
+ x.textAlign="center";
 
  var img=new Image();
- img.src=LOGO_SRC;
+ img.src=LOGO_BASE64;
  img.onload=function(){
-   var boy=r.includes("MENINO");
-   var g=x.createLinearGradient(0,0,0,h);
-   g.addColorStop(0,boy?"#b7d8f6":"#f6b7c5");
-   g.addColorStop(1,"#fff");
-   x.fillStyle=g;x.fillRect(0,0,w,h);
-
-   x.textAlign="center";
-
-   x.drawImage(img,w/2-80,60,160,160);
-
-   x.font="bold 48px system-ui";
-   x.fillStyle="#333";
-   x.fillText(APP_NAME,w/2,260);
-
-   x.font="36px system-ui";
-   x.fillText(SLOGAN,w/2,310);
-
-   x.font="140px system-ui";
-   x.fillText("👶",w/2,520);
-
-   x.font="bold 96px system-ui";
-   x.fillText(r,w/2,740);
-
-   x.font="56px system-ui";
-   x.fillText(c+"% de chance",w/2,860);
-
-   x.font="44px system-ui";
-   x.fillText("Descubra o seu também",w/2,1020);
-
+   x.drawImage(img,w/2-80,80,160,160);
+   x.font="bold 48px system-ui";x.fillText(APP_NAME,w/2,280);
+   x.font="36px system-ui";x.fillText(SLOGAN,w/2,330);
+   x.font="140px system-ui";x.fillText("👶",w/2,540);
+   x.font="bold 96px system-ui";x.fillText(r,w/2,760);
+   x.font="56px system-ui";x.fillText(c+"% de chance",w/2,880);
+   x.font="44px system-ui";x.fillText("Descubra o seu também",w/2,1040);
    var a=document.createElement("a");
    a.download="meu-bebe-stories.png";
    a.href=cv.toDataURL("image/png");
@@ -234,6 +163,5 @@ function story(r,c){
 
 start();
 </script>
-
 </body>
 </html>
